@@ -1,18 +1,19 @@
+using System.ComponentModel.Design;
 using MoviesApi.Enteties;
 
 namespace MoviesApi.Mappers;
 
 public static class ModelEntityMappers
 {
-    public static Genre ToEntity(this Models.NewGenre genre)
+    public static Genre ToEntity (this Models.NewGenre genre)
         => new Genre(genre.Name);
 
-    public static Actor ToEntity(this Models.NewActor actor)
-        => new Actor()
+    public static Actor ToEntity ( this Models.NewActor actor )
+        => new Actor ()
         {   
             Id = Guid.NewGuid(),
-            FullName = actor.Fullname,
-            BirthDate = actor.Birthdate
+            Fullname = actor.Fullname,
+            Birthdate = actor.Birthdate
         };
 
     public static Movie ToEntity(this Models.NewMovie movie, 

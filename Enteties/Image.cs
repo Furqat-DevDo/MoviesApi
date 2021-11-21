@@ -6,15 +6,6 @@ namespace MoviesApi.Enteties
         public Guid ID{get;set;}=Guid.NewGuid();
         public byte[] Data {get;set;}
         [Required]
-        public Guid MovieId{get;set;}
-        [Obsolete]
-        public Image() {}
-        public Image(Guid movieid)
-        {
-           MovieId=movieid ;
-        }
-            
-        
-       
+        public Guid MovieId{get;set;} 
     }
 }

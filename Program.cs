@@ -1,4 +1,5 @@
 using MoviesApi.Data;
+using MoviesApi.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,6 +10,9 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddTransient<IGenreService, GenreService>();
+builder.Services.AddTransient<IActorService, ActorService>();
+builder.Services.AddTransient<IMovieService, MovieService>();
 
 var app = builder.Build();
 

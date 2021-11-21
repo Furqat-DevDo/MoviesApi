@@ -12,8 +12,8 @@ using MoviesApi.Data;
 namespace MoviesApi.Migrations
 {
     [DbContext(typeof(MoviesContext))]
-    [Migration("20211119144716_InitialeCreate")]
-    partial class InitialeCreate
+    [Migration("20211121125914_NewMigration")]
+    partial class NewMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -29,12 +29,12 @@ namespace MoviesApi.Migrations
                     b.Property<Guid>("ActorsId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("MoviesKey")
+                    b.Property<Guid>("MoviesId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.HasKey("ActorsId", "MoviesKey");
+                    b.HasKey("ActorsId", "MoviesId");
 
-                    b.HasIndex("MoviesKey");
+                    b.HasIndex("MoviesId");
 
                     b.ToTable("ActorMovie");
                 });
@@ -44,12 +44,12 @@ namespace MoviesApi.Migrations
                     b.Property<Guid>("GenresId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("MoviesKey")
+                    b.Property<Guid>("MoviesId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.HasKey("GenresId", "MoviesKey");
+                    b.HasKey("GenresId", "MoviesId");
 
-                    b.HasIndex("MoviesKey");
+                    b.HasIndex("MoviesId");
 
                     b.ToTable("GenreMovie");
                 });
@@ -59,10 +59,10 @@ namespace MoviesApi.Migrations
                     b.Property<Guid>("Id")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTimeOffset>("BirthDate")
+                    b.Property<DateTimeOffset>("Birthdate")
                         .HasColumnType("datetimeoffset");
 
-                    b.Property<string>("FullName")
+                    b.Property<string>("Fullname")
                         .IsRequired()
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
@@ -110,7 +110,7 @@ namespace MoviesApi.Migrations
 
             modelBuilder.Entity("MoviesApi.Enteties.Movie", b =>
                 {
-                    b.Property<Guid>("Key")
+                    b.Property<Guid>("Id")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Description")
@@ -128,7 +128,7 @@ namespace MoviesApi.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
-                    b.HasKey("Key");
+                    b.HasKey("Id");
 
                     b.ToTable("Movies");
                 });
@@ -143,7 +143,7 @@ namespace MoviesApi.Migrations
 
                     b.HasOne("MoviesApi.Enteties.Movie", null)
                         .WithMany()
-                        .HasForeignKey("MoviesKey")
+                        .HasForeignKey("MoviesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -158,7 +158,7 @@ namespace MoviesApi.Migrations
 
                     b.HasOne("MoviesApi.Enteties.Movie", null)
                         .WithMany()
-                        .HasForeignKey("MoviesKey")
+                        .HasForeignKey("MoviesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

@@ -1,43 +1,81 @@
 
+using MoviesApi.Data;
 using MoviesApi.Enteties;
 
 namespace MoviesApi.Services
 {
     public class GenreService : IGenreService
     {
-        public Task<(bool IsSuccess, Exception Exception, Genre Genre)> CreateAsync(Genre Genre)
+        private readonly MoviesContext _gtx;
+
+        public GenreService(MoviesContext gtx)
         {
-            throw new NotImplementedException();
+          _gtx=gtx;
+        }
+        public async Task<(bool IsSuccess, Exception Exception, Genre Genre)> CreateAsync(Genre Genre)
+        {
+           try
+           {
+             await _gtx.Genres.AddAsync(Genre);
+             await _gtx.SaveChangesAsync();
+             return(true,null,Genre);
+           }
+           catch(Exception e)
+           {
+            return(false,e,null);
+           }
         }
 
-        public Task<(bool IsSuccess, Exception Exception)> DeleteAsync(Guid Id)
+        public async Task<(bool IsSuccess, Exception Exception)> DeleteAsync(Guid Id)
         {
-            throw new NotImplementedException();
+          try
+          {
+            var genre=await GetAsync(Id);
+            if(genre==default(Genre))
+            {
+                return(false,new Exception("Not Found"));
+            }
+            _gtx.Genres.Remove(genre);
+           await  _gtx.SaveChangesAsync();
+           return(true,null);
+          }
+          catch(Exception e)
+          {
+           return(false,e);
+          }
         }
 
-        public Task<bool> ExsistAsync(Guid Id)
-        {
-            throw new NotImplementedException();
-        }
+        public Task<bool> ExsistAsync(Guid id)
+        =>_gtx.Genres.AnyAsync(a=>a.Id==id);
 
         public Task<List<Genre>> GetAllAsync()
-        {
-            throw new NotImplementedException();
-        }
+        =>_gtx.Genres.
+        AsNoTracking().
+        Include(m=>m.Movies)
+        .ToListAsync();
 
         public Task<Genre> GetAsync(Guid Id)
-        {
-            throw new NotImplementedException();
-        }
+        =>_gtx.Genres.FirstOrDefaultAsync(m=>m.Id==Id);
+        public async Task<bool> GetByNameAsync(string name)
+        => await _gtx.Genres.AnyAsync(m=>m.Name==name);
+      
 
-        public Task<List<Genre>> GetByName(string Name)
+        public async Task<(bool IsSuccess, Exception Exception, Genre Genre)> UpdateAsync(Genre genre)
         {
-            throw new NotImplementedException();
-        }
-
-        public Task<(bool IsSuccess, Exception Exception, Genre Genre)> UpdateAsync(Guid Id)
-        {
-            throw new NotImplementedException();
+           try
+           {
+            if(!await ExsistAsync(genre.Id))
+            {
+            return(false, new Exception("Genre Was Not Found"),null);
+            }
+             _gtx.Genres.Update(genre);
+             await _gtx.SaveChangesAsync();
+             return(true,null,genre);
+           }
+           catch(Exception e)
+           {
+            return(false,e,null);
+           }
         }
     }
 }

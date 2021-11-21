@@ -10,6 +10,6 @@ namespace MoviesApi.Services
         Task <List<Actor>> GetAllAsync(string fullname);
         Task< (bool IsSuccess , Exception Exception)> DeleteAsync(Guid Id);
         Task <bool > ExsistAsync(Guid Id);
-        Task <(bool IsSuccess, Exception Exception,Actor Actor)> UpdateAsync(Guid Id);
+        Task <(bool IsSuccess, Exception Exception,Actor Actor)> UpdateAsync(Actor actor);
     }
 }

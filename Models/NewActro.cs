@@ -2,7 +2,7 @@ namespace MoviesApi.Models;
 public class NewActor
 {
 [Required]
- [MaxLength(255)]
+[MaxLength(255)]
 public string Fullname { get; set; }
 
 [Required]

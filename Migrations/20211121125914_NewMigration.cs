@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace MoviesApi.Migrations
 {
-    public partial class InitialeCreate : Migration
+    public partial class NewMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -14,8 +14,8 @@ namespace MoviesApi.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    FullName = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
-                    BirthDate = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false)
+                    Fullname = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
+                    Birthdate = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -38,7 +38,7 @@ namespace MoviesApi.Migrations
                 name: "Movies",
                 columns: table => new
                 {
-                    Key = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Title = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     Description = table.Column<string>(type: "nvarchar(1024)", maxLength: 1024, nullable: true),
                     Rating = table.Column<double>(type: "float", nullable: false),
@@ -46,7 +46,7 @@ namespace MoviesApi.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Movies", x => x.Key);
+                    table.PrimaryKey("PK_Movies", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -54,11 +54,11 @@ namespace MoviesApi.Migrations
                 columns: table => new
                 {
                     ActorsId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    MoviesKey = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    MoviesId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ActorMovie", x => new { x.ActorsId, x.MoviesKey });
+                    table.PrimaryKey("PK_ActorMovie", x => new { x.ActorsId, x.MoviesId });
                     table.ForeignKey(
                         name: "FK_ActorMovie_Actors_ActorsId",
                         column: x => x.ActorsId,
@@ -66,10 +66,10 @@ namespace MoviesApi.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ActorMovie_Movies_MoviesKey",
-                        column: x => x.MoviesKey,
+                        name: "FK_ActorMovie_Movies_MoviesId",
+                        column: x => x.MoviesId,
                         principalTable: "Movies",
-                        principalColumn: "Key",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -78,11 +78,11 @@ namespace MoviesApi.Migrations
                 columns: table => new
                 {
                     GenresId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    MoviesKey = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    MoviesId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_GenreMovie", x => new { x.GenresId, x.MoviesKey });
+                    table.PrimaryKey("PK_GenreMovie", x => new { x.GenresId, x.MoviesId });
                     table.ForeignKey(
                         name: "FK_GenreMovie_Genres_GenresId",
                         column: x => x.GenresId,
@@ -90,10 +90,10 @@ namespace MoviesApi.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_GenreMovie_Movies_MoviesKey",
-                        column: x => x.MoviesKey,
+                        name: "FK_GenreMovie_Movies_MoviesId",
+                        column: x => x.MoviesId,
                         principalTable: "Movies",
-                        principalColumn: "Key",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -112,19 +112,19 @@ namespace MoviesApi.Migrations
                         name: "FK_Image_Movies_MovieId",
                         column: x => x.MovieId,
                         principalTable: "Movies",
-                        principalColumn: "Key",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_ActorMovie_MoviesKey",
+                name: "IX_ActorMovie_MoviesId",
                 table: "ActorMovie",
-                column: "MoviesKey");
+                column: "MoviesId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_GenreMovie_MoviesKey",
+                name: "IX_GenreMovie_MoviesId",
                 table: "GenreMovie",
-                column: "MoviesKey");
+                column: "MoviesId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Genres_Name",
